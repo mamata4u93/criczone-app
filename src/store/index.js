@@ -2,19 +2,18 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { loadState } from "../utility/browser-storage";
 
-
-import AuthRedux from './AuthRedux';
-import TriviaRedux from './TriviaRedux';
+import UserRedux from './UserRedux';
+import MainRedux from './MainRedux';
+import ScoreRedux from './ScoreRedux';
 
 const reducers = combineReducers({
-
-  auth: AuthRedux,
-  trivia: TriviaRedux,
-
+  user: UserRedux,
+  auth: MainRedux,
+  score: ScoreRedux,
 });
 
 export const store = configureStore({
   devTools: true,
   reducer: reducers,
-  preloadedState: loadState(),
+  preloadedState: loadState('redux'),
 });

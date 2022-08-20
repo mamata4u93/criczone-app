@@ -6,7 +6,7 @@ import Images from '../common/Images'
 import { useTranslation } from "react-i18next";
 
 import { useSelector, useDispatch } from 'react-redux'
-import { listAllTrivias } from '../store/TriviaRedux'
+// import { listAllTrivias } from '../store/TriviaRedux'
 
 
 const ContestListing = () => {
@@ -14,11 +14,11 @@ const ContestListing = () => {
 
     const dispatch = useDispatch()
     const token = useSelector((state) => state.auth.token)
-    const allTrivias = useSelector((state) => state.trivia.allTrivias)
+    
 
-    useEffect(() => {
-        dispatch(listAllTrivias({ token }))
-    }, []);
+    // useEffect(() => {
+    //     dispatch(listAllTrivias({ token }))
+    // }, []);
 
     // console.log(allTrivias)
 

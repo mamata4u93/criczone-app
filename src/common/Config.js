@@ -1,19 +1,21 @@
 import { Dimensions, Platform } from 'react-native';
 const { height, width } = Dimensions.get('window');
 
+
 export default {
-  
-  // Localhost
-  // apiSocketUrl: 'http://localhost:3007',
-  // apiBaseUrl: 'http://localhost:3007/api/v1',
-  // uploadPath: 'http://localhost:3007/ClassPlusImages',
 
-  
-
-  // Live
-  apiSocketUrl: 'http://moclass.in:3007',
-  apiBaseUrl: 'https://insta-starzz-staging.herokuapp.com/api/v1',
-  uploadPath: 'http://moclass.in/ClassPlusImages',
+  liveScoreApiURL: 'https://api.sports.roanuz.com/v5/core/RS_P_1546828966243995659/graphql',
+  apiKey: 'RS5:3b28e1af862fe552f9cade04db1a8705',
+  frappe_custom_app: 'erp_custom_auth',
+  frappe_url: 'https://news.techwizards.io',
+  token: 'token 8013775618bd3a7:99fa9ff03295aa8',
+  rapidAPIHost: 'cricket-live-data.p.rapidapi.com',
+  rapidAPIKey: 'ceff4f9011mshb4a79448651b42dp119c71jsn663c2e90ee8a',
+  rapidAPIUrl: 'https://cricket-live-data.p.rapidapi.com',
+ 
+  trunCate: (str, max, suffix) => {
+    return str.length < max ? str : `${str.substr(0, str.substr(0, max - suffix.length).lastIndexOf(' '))} ${suffix}`
+  },
 
   groupIds: {
     superadmin: '5ed1ed6dae6acd0278cc4b83',

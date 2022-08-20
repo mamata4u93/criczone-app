@@ -1,434 +1,209 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { ImageBackground, ScrollView, Dimensions } from "react-native";
-import styles from '../common/FormStyles'
-import Images from '../common/Images'
+import { useSelector, useDispatch } from 'react-redux'
+import {styles, Images, Config} from '../common'
 import { useTranslation } from "react-i18next";
-import Config from '../common/Config'
-import { Box, Text, Image, Center, Button, ArrowForwardIcon, Heading, HStack } from "native-base";
+import { Box, Text, Image, Center, Button, Heading, HStack, Pressable, Menu, SearchIcon, HamburgerIcon } from "native-base";
+import { Icons } from '../components';
+import { getHomeSettings, getHeadlineList, getNewsCategory, getNewsList } from '../store/MainRedux'
 
-
-const Home= () => {
+const Home = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch()
+    const [fastTab, setFastTab] = useState('ongoing')
+    const token = Config.token
+    const homeSettings = useSelector((state) => state.auth.homeSettings)
+    const headlines = useSelector((state) => state.auth.headlines)
+    const categorys = useSelector((state) => state.auth.categorys)
 
-    console.log(Config.width)
+    // alert(JSON.stringify(categorys))
+
+
+
+    useEffect(() => {
+        dispatch(getHomeSettings({ token }))
+        dispatch(getHeadlineList({ token }))
+        dispatch(getNewsCategory({ token }))
+        dispatch(getNewsList({ page: 1, size: 500, token }))
+    }, []);
+
+
 
     return (
         <Box style={styles.container} pb='40'>
 
             <ScrollView>
+                
+                <Box bg="info.400">
+                    <HStack space={10}>
+                        <HStack />
+                        <Box w="5%" mb="10">
+                            <Menu w="190" trigger={triggerProps => {
+                                return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
+                                    <HamburgerIcon size="30" color="white" mt="2" />
+                                </Pressable>
+                            }}>
+                                <Menu.Item>World</Menu.Item>
+                                <Menu.Item>Africa</Menu.Item>
+                                <Menu.Item>Asia</Menu.Item>
+                                <Menu.Item>Europe</Menu.Item>
+                                <Menu.Item>Middle East</Menu.Item>
+                                <Menu.Item>Latin Amrica</Menu.Item>
+                                <Menu.Item>UK</Menu.Item>
+                                <Menu.Item>US & Canada</Menu.Item>
+                                <Menu.Item>Paradise Papers</Menu.Item>
+                                <Menu.Item>Business</Menu.Item>
+                                <Menu.Item>Tech</Menu.Item>
+                                <Menu.Item>Science</Menu.Item>
+                                <Menu.Item>Hralth</Menu.Item>
+                                <Menu.Item>Entretainment</Menu.Item>
+                            </Menu>
+                        </Box>
+                        <HStack />
+                        <HStack />
+                        <Text fontSize="4xl" color="white" fontWeight="600">{homeSettings?.bottom_category}</Text>
+                        <HStack />
+                        <HStack />
+                        <SearchIcon size="10" color="white" mt="2" />
+                        <HStack />
+                        <HStack>
+                            <Box w="5%" mb="10" mt="2">
+                                <Menu w="190" trigger={triggerProps => {
+                                    return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
+                                        <Icons font={"Entypo"} name={"dots-three-vertical"} color={"white"} size={25} />
+                                    </Pressable>
+                                }}>
+                                    <Menu.Item>Satting</Menu.Item>
+                                    <Menu.Item>Help</Menu.Item>
+                                    <Menu.Item>Contact us</Menu.Item>
+                                    <Menu.Item>Other BBC apps</Menu.Item>
+                                </Menu>
+                            </Box>
+                        </HStack>
+                    </HStack>
 
-
-                <ImageBackground
-                    source={Images.bodyBg}
-                    style={{ paddingHorizontal: 10 }}
-                >
+                  
+                    <HStack space={20} mb="2">
+                        
+                        <Button variant="link" onPress={() => (setFastTab('ongoing'))}><Text color="white" fontSize="lg">Top Stories</Text></Button>
+                        <Button variant="link" onPress={() => (setFastTab('upcoming'))}><Text color="white" fontSize="lg">Video</Text></Button>
+                        <Button variant="link" onPress={() => (setFastTab('completed'))}><Text color="white" fontSize="lg">My News</Text></Button>
+                        <Button variant="link" onPress={() => (setFastTab('Popular'))}><Text color="white" fontSize="lg">Popular</Text></Button>
+                        <Button variant="link" onPress={() => (setFastTab('LIVE'))}><Text color="white" fontSize="lg">LIVE</Text></Button>
                    
-
-
-                    <Text fontSize="2xl" color='white' mt='10' mb='5' fontWeight='600'>{t('heading')} <Text color="yellow.600" >{t('heading2')}</Text></Text>
-
-                    <Box style={{ marginVertical: 20 }}>
-                        <ScrollView horizontal={true}>
-                            {/* <View style={{ width: Config.width}}> */}
-                            {/* <Box> */}
-                            <ImageBackground
-                                source={Images.shahrukkhanImg}
-                                resizeMode="contain"
-                                style={{ width: Config.width }}
-                            >
-                                <Box mt='5' >
-                                    <Text fontSize="xs" color='yellow.600'>{t('entryFee')}</Text>
-                                    <Text fontSize="sm" color='warmGray.50' mt='6'>{t('meet')}</Text>
-                                    <Text fontSize="xl" color='warmGray.50' fontWeight='bold' mt='3' >{t('ShahName')}</Text>
-
-                                    <Box style={{ paddingVertical: 7, flexDirection: 'row' }}>
-                                        <Button size="lg" variant="link" colorScheme='yellow'>
-                                            {t('enterNow')}
-                                        </Button>
-                                        <ArrowForwardIcon size="5" color="yellow.600" mt='3' />
-                                    </Box>
-                                    {/* <HStack > */}
-                                    <Box flexDirection='row' justifyContent='space-between'>
-                                        <Text fontSize="xs" color='gray.400' >{t('ticking')}</Text>
-                                        <Text fontSize="xs" color='warmGray.50'>{t('time')}</Text>
-
-                                    </Box>
-                                    {/* </HStack> */}
-                                </Box>
-
-
-                            </ImageBackground>
-                            {/* </Box> */}
-                            {/* </View> */}
-
-                            <ImageBackground
-                                source={Images.shahrukkhanImg}
-                                style={styles.shahruk}
-                            >
-                                <Box mt='5'>
-                                    <Text fontSize="xs" color='yellow.600'>{t('entryFee')}</Text>
-                                    <Text fontSize="sm" color='warmGray.50' mt='6'>{t('meet')}</Text>
-                                    <Text fontSize="xl" color='warmGray.50' fontWeight='bold' mt='3' >{t('ShahName')}</Text>
-
-                                    <Box style={{ paddingVertical: 7, flexDirection: 'row' }}>
-                                        <Button size="lg" variant="link" colorScheme='yellow'>
-                                            {t('enterNow')}
-                                        </Button>
-                                        <ArrowForwardIcon size="5" color="yellow.600" mt='3' />
-                                    </Box>
-
-                                    <Box flexDirection='row' justifyContent='space-between'>
-                                        <Text fontSize="xs" color='gray.400'>{t('ticking')}</Text>
-                                        <Text fontSize="xs" color='warmGray.50'>{t('time')}</Text>
-
-                                    </Box>
-                                </Box>
-
-
-                            </ImageBackground>
-
-                            <ImageBackground
-                                source={Images.shahrukkhanImg}
-                                style={styles.shahruk}
-                            >
-                                <Box mt='5'>
-                                    <Text fontSize="xs" color='yellow.600'>{t('entryFee')}</Text>
-                                    <Text fontSize="sm" color='warmGray.50' mt='6'>{t('meet')}</Text>
-                                    <Text fontSize="xl" color='warmGray.50' fontWeight='bold' mt='3' >{t('ShahName')}</Text>
-
-                                    <Box style={{ paddingVertical: 7, flexDirection: 'row' }}>
-                                        <Button size="lg" variant="link" colorScheme='yellow'>
-                                            {t('enterNow')}
-                                        </Button>
-                                        <ArrowForwardIcon size="5" color="yellow.600" mt='3' />
-                                    </Box>
-
-                                    <Box flexDirection='row' justifyContent='space-between'>
-                                        <Text fontSize="xs" color='gray.400'>{t('ticking')}</Text>
-                                        <Text fontSize="xs" color='warmGray.50'>{t('time')}</Text>
-
-                                    </Box>
-                                </Box>
-
-
-                            </ImageBackground>
-
-                        </ScrollView>
-                    </Box>
-
-                    {/* Avail benefits sec */}
-
-                    <Box>
-                        <Heading fontSize='2xl' bold mt='3' color='white'>{t('avail')} <Text color="yellow.600" >{t('benefit')}</Text></Heading>
-                        <Text fontSize="sm" color='gray.400' mt='2'>{t('benefits')}</Text>
-                    </Box>
-
-                    <HStack justifyContent='space-between' flexWrap='wrap' mt='5'>
-                        <Center w="48%" bg="black" rounded="md" borderWidth='1' borderColor='primary.800' mb='4' p='4' >
-
-                            <Image h='10' w='10' source={{
-                                uri: Images.flightImg
-                            }} />
-                            <Text fontSize="xs" color='yellow.600' mt='3'>{t('flight')}</Text>
-                            <Text fontSize="2xs" color='white' mt='2' textAlign='center'>{t('paragraph')}</Text>
-
-                        </Center>
-
-                        <Center w="48%" bg="black" rounded="md" borderWidth='1' borderColor='primary.800' mb='4' p='4'>
-                            <Image h='10' w='10' source={{
-                                uri: Images.bitmapImg
-                            }} />
-                            <Text fontSize="xs" color='yellow.600' mt='3'>{t('hotels')}</Text>
-                            <Text fontSize="2xs" color='white' mt='2' textAlign='center'>{t('paragraph')}</Text>
-
-                        </Center>
-                        <Center w="48%" bg="black" rounded="md" borderWidth='1' borderColor='primary.800' mb='4' p='4'>
-                            <Image h='10' w='10' source={{
-                                uri: Images.amigoImg
-                            }} />
-                            <Text fontSize="xs" color='yellow.600' mt='3'>{t('amigo')}</Text>
-                            <Text fontSize="2xs" color='white' mt='2' textAlign='center'>{t('paragraph')}</Text>
-
-                        </Center>
-                        <Center w="48%" bg="black" rounded="md" borderWidth='1' borderColor='primary.800' mb='4' p='4'>
-                            <Image h='10' w='10' source={{
-                                uri: Images.gala
-                            }} />
-                            <Text fontSize="xs" color='yellow.600' mt='3'>{t('gala')}</Text>
-                            <Text fontSize="2xs" color='white' mt='2' textAlign='center'>{t('paragraph')}</Text>
-
-                        </Center>
-                        <Center w="48%" bg="black" rounded="md" borderWidth='1' borderColor='primary.800' mb='4' p='4'>
-                            <Image h='10' w='10' source={{
-                                uri: Images.amigoImg
-                            }} />
-                            <Text fontSize="xs" color='yellow.600' mt='3'>{t('lorem')}</Text>
-                            <Text fontSize="2xs" color='white' mt='2' textAlign='center'>{t('paragraph')}</Text>
-
-                        </Center>
-                        <Center w="48%" bg="black" rounded="md" borderWidth='1' borderColor='primary.800' mb='4' p='4'>
-                            <Image h='10' w='10' source={{
-                                uri: Images.win
-                            }} />
-                            <Text fontSize="xs" color='yellow.600' mt='3'>{t('prizes')}</Text>
-                            <Text fontSize="2xs" color='white' mt='2' textAlign='center'>{t('paragraph')}</Text>
-
-                        </Center>
-
                     </HStack>
-
-                    {/* Ongoing contests sec */}
-
-                    <HStack justifyContent='space-between'>
-                        <Box>
-                            <Heading fontSize='2xl' bold mt='3' color='white'>{t('ongoing')} <Text color="yellow.600" >{t('contests')}</Text></Heading>
-                            <Text fontSize="sm" color='gray.400' mt='2'>{t('hurryUp')}</Text>
-                        </Box>
-
-                        <Button size="lg" variant="link" mt='-3'>
-                            {t('viewmore')}
-                        </Button>
-                    </HStack>
-
-                    <ScrollView horizontal={true}>
-                        <Box mt='7' mb='7'>
-                            <ImageBackground
-                                source={Images.harshitagaur}
-                                style={{ height: 103, width: 374 }}
+                </Box>
 
 
-                            >
-                                <HStack justifyContent='space-between' pt='6'>
-
-                                    <Box ml='20' pl='7'>
-                                        <Text fontSize="sm" color='white' mt='2'>{t('name')}</Text>
-                                        <Text fontSize="xs" color='gray.400' mt='2'>{t('entryFee')}</Text>
-                                    </Box>
-
-                                    <Box alignItems="flex-end" mt='4' mr='5'>
-                                        <Button>{t('enterNow')}</Button>
-                                    </Box>
+                {fastTab == 'ongoing' && (<Box>
+                    <Box bgColor="white" shadow={4} mb="5">
+                        <Image h='300' w='100%' source={
+                            Images.militarybase
+                        } />
+                        <Text fontSize="2xl" fontWeight="600" mx="2">{homeSettings?.meta_title}</Text>
+                        <Text fontSize="md" fontWeight="600" mx="2">{homeSettings?.meta_description}</Text>
+                    </Box>
+                    <Box bgColor="white" shadow={7} borderRadius="5">
+                        <HStack space="4" ml="2">
+                            <Image h='40' w='50%' source={
+                                Images.nooria
+                            } />
+                            <Box>
+                                <Text fontSize="xl" fontWeight="600">{homeSettings?.right_category_one}</Text>
+                                <HStack mt="20">
+                                    <Text fontSize="lg" fontWeight="600">3h |</Text>
+                                    <Button size="lg" variant="link" mt="-2">
+                                        Science & Environment
+                                    </Button>
                                 </HStack>
+                            </Box>
+                        </HStack>
+                    </Box>
 
-                            </ImageBackground>
-                        </Box>
-
-                        <Box mt='7' mb='7'>
-                            <ImageBackground
-                                source={Images.harshitagaur}
-                                style={{ height: 103, width: 374 }}
-
-
-                            >
-                                <HStack justifyContent='space-between' pt='6'>
-
-                                    <Box ml='20' pl='7'>
-                                        <Text fontSize="sm" color='white' mt='2'>{t('name')}</Text>
-                                        <Text fontSize="xs" color='gray.400' mt='2'>{t('entryFee')}</Text>
-                                    </Box>
-
-                                    <Box alignItems="flex-end" mt='4' mr='5'>
-                                        <Button>{t('enterNow')}</Button>
-                                    </Box>
+                    <Box bgColor="white" shadow={7} borderRadius="5" mt="5">
+                        <HStack space="4" ml="2">
+                            <Image h='40' w='50%' source={
+                                Images.china
+                            } />
+                            <Box>
+                                <Text fontSize="xl" fontWeight="600">{homeSettings?.right_category_two}</Text>
+                                <HStack mt="20">
+                                    <Text fontSize="lg" fontWeight="600">13h |</Text>
+                                    <Button size="lg" variant="link" mt="-2">
+                                        China
+                                    </Button>
                                 </HStack>
+                            </Box>
+                        </HStack>
+                    </Box>
 
-                            </ImageBackground>
-                        </Box>
-
-                        <Box mt='7' mb='7'>
-                            <ImageBackground
-                                source={Images.harshitagaur}
-                                style={{ height: 103, width: 374 }}
-
-
-                            >
-                                <HStack justifyContent='space-between' pt='6'>
-
-                                    <Box ml='20' pl='7'>
-                                        <Text fontSize="sm" color='white' mt='2'>{t('name')}</Text>
-                                        <Text fontSize="xs" color='gray.400' mt='2'>{t('entryFee')}</Text>
-                                    </Box>
-
-                                    <Box alignItems="flex-end" mt='4' mr='5'>
-                                        <Button colorScheme='yellow'>{t('enterNow')}</Button>
-                                    </Box>
+                    <Box bgColor="white" shadow={7} borderRadius="5" mt="5">
+                        <HStack space="4" ml="2">
+                            <Image h='40' w='50%' source={
+                                Images.nooria
+                            } />
+                            <Box>
+                                <Text fontSize="xl" fontWeight="600">Afghan contractors: 'I wish I'd never worked for the UK government</Text>
+                                <HStack mt="20">
+                                    <Text fontSize="lg" fontWeight="600">3h |</Text>
+                                    <Button size="lg" variant="link" mt="-2">
+                                        Science & Environment
+                                    </Button>
                                 </HStack>
-
-                            </ImageBackground>
-                        </Box>
-
-                    </ScrollView>
-
-                    {/* Upcoming contests- sec */}
-
-                    <HStack justifyContent='space-between'>
-                        <Box>
-                            <Heading fontSize='2xl' bold mt='3' color='white'>{t('upcoming')} <Text color="yellow.600" >{t('contests')}</Text></Heading>
-                            <Text fontSize="sm" color='gray.400' mt='2'>{t('hurryUp')}</Text>
-                        </Box>
-
-                        <Button size="lg" variant="link" colorScheme='yellow' mt='-3'>
-                            {t('viewmore')}
-                        </Button>
-                    </HStack>
-
-                    <Box mt='7' mb='3'>
-                        <ScrollView horizontal={true}>
-                            <ImageBackground
-
-                                source={Images.rohitsharma}
-                                style={{ height: 151, width: 160, textAlign: 'center', marginRight: 5 }}
-                            >
-                                <Box mt='20'>
-                                    <Text fontSize="sm" color='white' fontWeight='bold' mt='2'>{t('rohit')}</Text>
-                                    <Text fontSize="2xs" color='white' mt='2'>{t('time')}</Text>
-                                </Box>
-                            </ImageBackground>
-
-                            <ImageBackground
-                                source={Images.harshita}
-                                style={{ height: 151, width: 160, textAlign: 'center', marginRight: 5 }}
-                            >
-                                <Box mt='20'>
-                                    <Text fontSize="sm" color='white' fontWeight='bold' mt='2'>{t('harshita')}</Text>
-                                    <Text fontSize="2xs" color='white' mt='2'>{t('time')}</Text>
-                                </Box>
-                            </ImageBackground>
-
-                            <ImageBackground
-                                source={Images.rohitsharma}
-                                style={{ height: 151, width: 160, textAlign: 'center', marginRight: 5 }}
-                            >
-                                <Box mt='20'>
-                                    <Text fontSize="sm" color='white' fontWeight='bold' mt='2'>{t('rohit')}</Text>
-                                    <Text fontSize="2xs" color='white' mt='2'>{t('time')}</Text>
-                                </Box>
-                            </ImageBackground>
-                        </ScrollView>
+                            </Box>
+                        </HStack>
                     </Box>
 
-                    {/* Win your Dream-sec */}
-
-                    <Box>
-                        <Heading fontSize='2xl' bold mt='3' color='white'>{t('win')} <Text color="yellow.600" >{t('dream')} </Text></Heading>
-                        <Text fontSize="sm" color='gray.400' mt='2'>{t('dreams')}</Text>
-                    </Box>
-                    <Box mt='10'>
-                        <ScrollView horizontal={true}>
-                            <ImageBackground
-                                source={Images.enterquiz}
-                                style={{ height: 278, width: 374, marginRight: 10 }}
-                            >
-                                <Box mt='15%' pl='37' pr='20%'>
-                                    <Text fontSize='2xl' color='yellow.600' fontWeight='bold' pt='23%' pb='2' >{t('quiz')}</Text>
-                                    <Text fontSize='md' color='white' lineHeight='22'>{t('paragraph')}</Text>
-                                </Box>
-                            </ImageBackground>
-
-                            <ImageBackground
-                                source={Images.enterquiz}
-                                style={{ height: 278, width: 374, marginRight: 10 }}
-                            >
-                                <Box mt='15%' pl='37' pr='20%'>
-                                    <Text fontSize='2xl' color='yellow.600' fontWeight='bold' pt='23%' pb='2' >{t('quiz')}</Text>
-                                    <Text fontSize='md' color='white' lineHeight='22'>{t('paragraph')}</Text>
-                                </Box>
-                            </ImageBackground>
-
-                            <ImageBackground
-                                source={Images.enterquiz}
-                                style={{ height: 278, width: 374, marginRight: 10 }}
-                            >
-                                <Box mt='15%' pl='37' pr='20%'>
-                                    <Text fontSize='2xl' color='yellow.600' fontWeight='bold' pt='23%' pb='2'>{t('quiz')}</Text>
-                                    <Text fontSize='md' color='white' lineHeight='22'>{t('paragraph')}</Text>
-                                </Box>
-                            </ImageBackground>
-                        </ScrollView>
+                    <Box bgColor="white" shadow={7} borderRadius="5" mt="5">
+                        <HStack space="4" ml="2">
+                            <Image h='40' w='50%' source={
+                                Images.china
+                            } />
+                            <Box>
+                                <Text fontSize="xl" fontWeight="600">China inducing rainfall to combat severe drought</Text>
+                                <HStack mt="20">
+                                    <Text fontSize="lg" fontWeight="600">13h |</Text>
+                                    <Button size="lg" variant="link" mt="-2">
+                                        China
+                                    </Button>
+                                </HStack>
+                            </Box>
+                        </HStack>
                     </Box>
 
-                    {/* Botton_sec */}
-
-                    <Box mt='10' mb='10' >
-
-
-                        <Button p='4'>
-                            {/* <Image  h='20' w='20'  source={{
-                            uri: Images.starAnimation
-                        }} /> */}
-                            {t('view')}
-                            {/* <Image  h='20' w='20'  source={{
-                            uri: Images.starAnimation
-                        }} /> */}
-                        </Button>
+                    <Box bgColor="white" shadow={4} my="5">
+                        <Image h='300' w='100%' source={
+                            Images.capitalkabul
+                        } />
+                        <Text fontSize="4xl" fontWeight="600" mx="2">Kabul mosque attack: 'Many casualties feared'</Text>
                     </Box>
 
-                    {/* Did you know? sec */}
-
-                    <HStack justifyContent='space-between'>
-                        <Box>
-                            <Heading fontSize='2xl' bold mt='3' color='white'>{t('didyou')} <Text color="yellow.600" >{t('know')}</Text></Heading>
-                            <Text fontSize="sm" color='gray.400' mt='2'>{t('learn')}</Text>
-                        </Box>
-
-                        <Button size="lg" variant="link" mt='-3'>
-                            {t('viewmore')}
-                        </Button>
-                    </HStack>
-
-                    <Box mt='10' mb='20'>
-                        <ScrollView horizontal={true}>
-                            <ImageBackground
-                                source={Images.amitabh}
-                                style={{ height: 217, width: 369, marginRight: 10, paddingLeft: 10, paddingBottom: 20 }}
-                            >
-                                <Box mt='10%' >
-                                    <Text fontSize='md' color='white' fontWeight='600' pt='23%' pb='2'>{t('aboutAmitabh')}</Text>
-
-                                    <Box style={{ flexDirection: 'row' }}>
-                                        <Button size="lg" variant="link">
-                                            {t('readMore')}
-                                        </Button>
-                                        <ArrowForwardIcon size="5" color="yellow.600" mt='3' />
-                                    </Box>
-                                </Box>
-                            </ImageBackground>
-
-                            <ImageBackground
-                                source={Images.amitabh}
-                                style={{ height: 217, width: 369, marginRight: 10, paddingLeft: 10, paddingBottom: 20 }}
-                            >
-                                <Box mt='10%' >
-                                    <Text fontSize='md' color='white' fontWeight='600' pt='23%' pb='2'>{t('aboutAmitabh')}</Text>
-
-                                    <Box style={{ flexDirection: 'row' }}>
-                                        <Button size="lg" variant="link">
-                                            {t('readMore')}
-                                        </Button>
-                                        <ArrowForwardIcon size="5" color="yellow.600" mt='3' />
-                                    </Box>
-                                </Box>
-                            </ImageBackground>
-
-                            <ImageBackground
-                                source={Images.amitabh}
-                                style={{ height: 217, width: 369, marginRight: 10, paddingLeft: 10, paddingBottom: 20 }}
-                            >
-                                <Box mt='10%' >
-                                    <Text fontSize='md' color='white' fontWeight='600' pt='23%' pb='2'>{t('aboutAmitabh')}</Text>
-
-                                    <Box style={{ flexDirection: 'row' }}>
-                                        <Button size="lg" variant="link">
-                                            {t('readMore')}
-                                        </Button>
-                                        <ArrowForwardIcon size="5" color="yellow.600" mt='3' />
-                                    </Box>
-                                </Box>
-                            </ImageBackground>
-                        </ScrollView>
+                    <Box bgColor="white" shadow={7} borderRadius="5" mt="5">
+                        <HStack space="4" ml="2">
+                            <Image h='40' w='50%' source={
+                                Images.nooria
+                            } />
+                            <Box>
+                                <Text fontSize="xl" fontWeight="600">Afghan contractors: 'I wish I'd never worked for the UK government</Text>
+                                <HStack mt="20" >
+                                    <Text fontSize="lg" fontWeight="600">3h |</Text>
+                                    <Button size="lg" variant="link" mt="-2">
+                                        Science & Environment
+                                    </Button>
+                                </HStack>
+                            </Box>
+                        </HStack>
                     </Box>
 
-                </ImageBackground>
+
+
+                </Box>)}
+
+
+                {fastTab == 'upcoming' && (<Box><Text fontSize="2xl" color='black' >2</Text></Box>)}
+                {fastTab == 'completed' && (<Box><Text fontSize="2xl" color='black' >3</Text></Box>)}
+                {fastTab == 'Popular' && (<Box><Text fontSize="2xl" color='black' >13</Text></Box>)}
+                {fastTab == 'LIVE' && (<Box><Text fontSize="2xl" color='black' >31</Text></Box>)}
             </ScrollView>
 
         </Box>
