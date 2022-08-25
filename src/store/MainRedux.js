@@ -76,7 +76,7 @@ export const getNewsList = createAsyncThunk(
   async (params, { rejectWithValue }) => {
       // alert(JSON.stringify(params))
     const response = await getAllDataApi({ doctype: doctypeBlogPost, fields: fieldsBlogPost, search: { [siteName]: 1 }, orderBy: 'published_on desc', ...params })
-console.log('cccccc' ,response)
+
 // alert(JSON.stringify(response))
     if (response.status === 'error') {
       return rejectWithValue(response.data)
@@ -146,6 +146,9 @@ export const counterSlice = createSlice({
   reducers: {
     resetNews: (state, action) => {
       state.newsDetails = {}
+    },
+    allSingleData: (state, action) => {
+      state.singleData = {}
     },
   },
   extraReducers: {
@@ -285,5 +288,5 @@ export const counterSlice = createSlice({
 
 })
 
-export const { resetNews } = counterSlice.actions
+export const { resetNews, allSingleData } = counterSlice.actions
 export default counterSlice.reducer

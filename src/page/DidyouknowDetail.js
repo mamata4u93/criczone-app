@@ -5,9 +5,12 @@ import { styles, Images } from '../common'
 import { HeaderBar } from '../components'
 import { useTranslation } from "react-i18next";
 
-const DidyouknowDetail = () => {
+const DidyouknowDetail = (props) => {
     const { t } = useTranslation();
+    const { route } = props;
 
+
+    alert(JSON.stringify(route.params.name))
     return (
         <Box style={styles.container}>
             <HeaderBar menu />
@@ -26,23 +29,7 @@ const DidyouknowDetail = () => {
                             {t('didyouknowTitle')}
                         </Text>
 
-                        < Text fontSize="sm" color="white" fontWeight='semibold' mt="3">
-                            {t('didyouknowAbout')}
-                        </Text>
-
-                        < Text fontSize="sm" color="white" fontWeight='semibold' mt="5" >
-                            {t('didyouknowMore')}
-                        </Text>
-
-                        < Text fontSize="sm" color="white" fontWeight='semibold' mt="5" >
-                            {t('didyouknowMore')}
-                        </Text>
-                        < Text fontSize="sm" color="white" fontWeight='semibold' mt="5" >
-                            {t('didyouknowMore')}
-                        </Text>
-                        < Text fontSize="sm" color="white" fontWeight='semibold' mt="5" >
-                            {t('didyouknowMore')}
-                        </Text>
+                        
 
 
                     </Center>

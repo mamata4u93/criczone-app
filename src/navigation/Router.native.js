@@ -22,6 +22,8 @@ const Router = () => {
     return <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="Navigation">
           <Stack.Screen name={"Navigation"} component={BottomTabRouter}/>
+          <Stack.Screen name={"DidyouknowDetail"} component={DidyouknowDetail}/>
+
       </Stack.Navigator>
   </NavigationContainer>
   
